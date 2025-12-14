@@ -4,6 +4,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import appCss from "../styles.css?url";
+import { Analytics } from "@vercel/analytics/react";
 
 export const Route = createRootRoute({
     head: () => ({
@@ -44,6 +45,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                         enableSystem={true}
                     >
                         {children}
+                        <Analytics />
                     </ThemeProvider>
                 </main>
                 <TanStackDevtools
