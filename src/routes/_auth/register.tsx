@@ -1,15 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Login from "@/components/auth/login";
+import Register from "@/components/auth/register";
 
-export const Route = createFileRoute("/_auth/login")({
+export const Route = createFileRoute("/_auth/register")({
     component: RouteComponent,
-    ssr: false,
 });
 
 function RouteComponent() {
     return (
         <div className="items-center-safe justify-center-safe flex min-h-dvh flex-col">
-            <Login />
+            <Register />
         </div>
     );
 }

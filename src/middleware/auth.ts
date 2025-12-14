@@ -13,3 +13,14 @@ export const authMiddleware = createMiddleware().server(
         return await next();
     }
 );
+
+export const authCheck = createMiddleware().server(
+    async ({ next, request }) => {
+        const session = await auth.api.getSession({ headers: request.headers });
+        if (session) {
+            throw redirect({ to: "/", replace: true });
+        }
+
+        return await next();
+    }
+);

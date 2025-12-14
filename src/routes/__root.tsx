@@ -1,7 +1,8 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "react-hot-toast";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -31,12 +32,20 @@ export const Route = createRootRoute({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <HeadContent />
             </head>
             <body>
-                <main className="bg-background">{children}</main>
+                <main className="bg-background">
+                    <ThemeProvider
+                        attribute="class"
+                        defaultTheme="system"
+                        enableSystem={true}
+                    >
+                        {children}
+                    </ThemeProvider>
+                </main>
                 <TanStackDevtools
                     config={{
                         position: "bottom-right",
@@ -47,6 +56,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
                             render: <TanStackRouterDevtoolsPanel />,
                         },
                     ]}
+                />
+                <Toaster
+                    position="top-right"
+                    toastOptions={{ duration: 5000 }}
                 />
                 <Scripts />
             </body>
