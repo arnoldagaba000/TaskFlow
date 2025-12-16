@@ -1,10 +1,10 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import appCss from "../styles.css?url";
-import { Analytics } from "@vercel/analytics/react";
 
 export const Route = createRootRoute({
     head: () => ({
