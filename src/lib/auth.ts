@@ -8,6 +8,12 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql",
     }),
+    account: {
+        accountLinking: {
+            enabled: true,
+            trustedProviders: ["google"],
+        },
+    },
     emailAndPassword: {
         enabled: true,
     },
@@ -23,3 +29,6 @@ export const auth = betterAuth({
         tanstackStartCookies(), // make sure this is the last plugin in the array
     ],
 });
+
+export type Session = typeof auth.$Infer.Session;
+export type User = typeof auth.$Infer.Session.user;
