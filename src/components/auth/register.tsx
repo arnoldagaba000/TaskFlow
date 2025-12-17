@@ -90,6 +90,7 @@ const Register = () => {
                                             Full Name
                                         </FieldLabel>
                                         <Input
+                                            disabled={form.state.isSubmitting}
                                             id={field.name}
                                             name={field.name}
                                             onBlur={field.handleBlur}
@@ -125,6 +126,7 @@ const Register = () => {
                                         </FieldLabel>
                                         <Input
                                             id={field.name}
+                                            disabled={form.state.isSubmitting}
                                             name={field.name}
                                             onBlur={field.handleBlur}
                                             onChange={(e) =>
@@ -159,6 +161,7 @@ const Register = () => {
                                         </FieldLabel>
                                         <Input
                                             id={field.name}
+                                            disabled={form.state.isSubmitting}
                                             name={field.name}
                                             onBlur={field.handleBlur}
                                             onChange={(e) =>

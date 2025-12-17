@@ -64,7 +64,7 @@ const Login = () => {
         });
     }, []);
 
-    const lastMethod = authClient.getLastUsedLoginMethod()
+    const lastMethod = authClient.getLastUsedLoginMethod();
 
     return (
         <Card className="w-full max-w-md">
@@ -94,7 +94,7 @@ const Login = () => {
                                 <GoogleIcon />
                                 Login with Google{" "}
                                 {lastMethod === "google" && (
-                                    <Badge className="-top-2 -right-1 absolute">
+                                    <Badge className="absolute -top-2 -right-1">
                                         Last used
                                     </Badge>
                                 )}
@@ -117,6 +117,7 @@ const Login = () => {
                                         </FieldLabel>
                                         <Input
                                             aria-invalid={isInvalid}
+                                            disabled={form.state.isSubmitting}
                                             id={field.name}
                                             name={field.name}
                                             onBlur={field.handleBlur}
@@ -161,6 +162,7 @@ const Login = () => {
                                         </div>
                                         <Input
                                             aria-invalid={isInvalid}
+                                            disabled={form.state.isSubmitting}
                                             id={field.name}
                                             name={field.name}
                                             onBlur={field.handleBlur}
