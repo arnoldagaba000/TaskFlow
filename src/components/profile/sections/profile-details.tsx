@@ -8,10 +8,10 @@ type ProfileDetailsProps = { user: User };
 
 export const ProfileDetails = memo(({ user }: ProfileDetailsProps) => (
     <SectionCard title="Profile Details">
-        <div className="flex w-full justify-between gap-5">
+        <div className="items-center-safe w-full gap-5 md:flex md:justify-between">
             <AvatarSection user={user} />
 
-            <div className="flex-1 space-y-4">
+            <div className="mt-5 space-y-4 md:mt-0 md:flex-1">
                 <DetailRow label="Full Name" value={user.name} />
                 <DetailRow label="Email Address" value={user.email} />
                 <DetailRow label="Account ID" mono value={user.id} />
