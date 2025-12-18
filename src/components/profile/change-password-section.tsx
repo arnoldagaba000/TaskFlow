@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/nursery/noLeakedRender: No leaked data */
 import { revalidateLogic, useForm } from "@tanstack/react-form";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -30,6 +31,7 @@ const ChangePasswordSection = () => {
                 {
                     currentPassword: value.currentPassword,
                     newPassword: value.newPassword,
+                    revokeOtherSessions: true,
                 },
                 {
                     onSuccess: () => {
@@ -47,7 +49,7 @@ const ChangePasswordSection = () => {
     });
 
     return (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col">
             <div>
                 <p className="font-medium text-sm">Password</p>
                 <p className="text-muted-foreground text-xs">
@@ -55,132 +57,141 @@ const ChangePasswordSection = () => {
                 </p>
             </div>
 
-            <Dialog
-                onOpenChange={(value) => {
-                    setOpen(value);
-                    if (!value) {
-                        form.reset();
-                    }
-                }}
-                open={open}
-            >
-                <DialogTrigger asChild>
-                    <Button size="sm" variant="outline">
-                        Change password
-                    </Button>
-                </DialogTrigger>
+            <div className="mt-4 flex flex-col gap-2">
+                <Dialog
+                    onOpenChange={(value) => {
+                        setOpen(value);
+                        if (!value) {
+                            form.reset();
+                        }
+                    }}
+                    open={open}
+                >
+                    <DialogTrigger asChild>
+                        <Button size="sm" variant="outline">
+                            Change password
+                        </Button>
+                    </DialogTrigger>
 
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Change password</DialogTitle>
-                    </DialogHeader>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Change password</DialogTitle>
+                        </DialogHeader>
 
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            form.handleSubmit();
-                        }}
-                    >
-                        <FieldGroup>
-                            <form.Field name="currentPassword">
-                                {(field) => {
-                                    const isInvalid =
-                                        field.state.meta.isTouched &&
-                                        !field.state.meta.isValid;
-                                    return (
-                                        <Field data-invalid={isInvalid}>
-                                            <Label htmlFor={field.name}>
-                                                Current password
-                                            </Label>
-                                            <Input
-                                                autoComplete="current-password"
-                                                disabled={
-                                                    form.state.isSubmitting
-                                                }
-                                                id={field.name}
-                                                name={field.name}
-                                                onBlur={field.handleBlur}
-                                                onChange={(e) =>
-                                                    field.handleChange(
-                                                        e.target.value
-                                                    )
-                                                }
-                                                type="password"
-                                                value={field.state.value}
-                                            />
-                                            {isInvalid && (
-                                                <FieldError
-                                                    errors={
-                                                        field.state.meta.errors
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                form.handleSubmit();
+                            }}
+                        >
+                            <FieldGroup>
+                                <form.Field name="currentPassword">
+                                    {(field) => {
+                                        const isInvalid =
+                                            field.state.meta.isTouched &&
+                                            !field.state.meta.isValid;
+                                        return (
+                                            <Field data-invalid={isInvalid}>
+                                                <Label htmlFor={field.name}>
+                                                    Current password
+                                                </Label>
+                                                <Input
+                                                    autoComplete="current-password"
+                                                    disabled={
+                                                        form.state.isSubmitting
                                                     }
-                                                />
-                                            )}
-                                        </Field>
-                                    );
-                                }}
-                            </form.Field>
-
-                            <form.Field name="newPassword">
-                                {(field) => {
-                                    const isInvalid =
-                                        field.state.meta.isTouched &&
-                                        !field.state.meta.isValid;
-                                    return (
-                                        <Field data-invalid={isInvalid}>
-                                            <Label htmlFor={field.name}>
-                                                New password
-                                            </Label>
-                                            <Input
-                                                autoComplete="new-password"
-                                                disabled={
-                                                    form.state.isSubmitting
-                                                }
-                                                id={field.name}
-                                                name={field.name}
-                                                onBlur={field.handleBlur}
-                                                onChange={(e) =>
-                                                    field.handleChange(
-                                                        e.target.value
-                                                    )
-                                                }
-                                                type="password"
-                                                value={field.state.value}
-                                            />
-                                            {isInvalid && (
-                                                <FieldError
-                                                    errors={
-                                                        field.state.meta.errors
+                                                    id={field.name}
+                                                    name={field.name}
+                                                    onBlur={field.handleBlur}
+                                                    onChange={(e) =>
+                                                        field.handleChange(
+                                                            e.target.value
+                                                        )
                                                     }
+                                                    type="password"
+                                                    value={field.state.value}
                                                 />
-                                            )}
-                                        </Field>
-                                    );
-                                }}
-                            </form.Field>
+                                                {isInvalid && (
+                                                    <FieldError
+                                                        errors={
+                                                            field.state.meta
+                                                                .errors
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
+                                        );
+                                    }}
+                                </form.Field>
 
-                            <form.Subscribe>
-                                {(state) => (
-                                    <Field>
-                                        <Button
-                                            aria-busy={state.isSubmitting}
-                                            disabled={
-                                                state.isSubmitting ||
-                                                !state.canSubmit
-                                            }
-                                            type="submit"
-                                        >
-                                            {state.isSubmitting
-                                                ? "Updating..."
-                                                : "Update password"}
-                                        </Button>
-                                    </Field>
-                                )}
-                            </form.Subscribe>
-                        </FieldGroup>
-                    </form>
-                </DialogContent>
-            </Dialog>
+                                <form.Field name="newPassword">
+                                    {(field) => {
+                                        const isInvalid =
+                                            field.state.meta.isTouched &&
+                                            !field.state.meta.isValid;
+                                        return (
+                                            <Field data-invalid={isInvalid}>
+                                                <Label htmlFor={field.name}>
+                                                    New password
+                                                </Label>
+                                                <Input
+                                                    autoComplete="new-password"
+                                                    disabled={
+                                                        form.state.isSubmitting
+                                                    }
+                                                    id={field.name}
+                                                    name={field.name}
+                                                    onBlur={field.handleBlur}
+                                                    onChange={(e) =>
+                                                        field.handleChange(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    type="password"
+                                                    value={field.state.value}
+                                                />
+                                                {isInvalid && (
+                                                    <FieldError
+                                                        errors={
+                                                            field.state.meta
+                                                                .errors
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
+                                        );
+                                    }}
+                                </form.Field>
+
+                                <form.Subscribe>
+                                    {(state) => (
+                                        <Field>
+                                            <Button
+                                                aria-busy={state.isSubmitting}
+                                                disabled={
+                                                    state.isSubmitting ||
+                                                    !state.canSubmit
+                                                }
+                                                type="submit"
+                                            >
+                                                {state.isSubmitting
+                                                    ? "Updating..."
+                                                    : "Update password"}
+                                            </Button>
+                                        </Field>
+                                    )}
+                                </form.Subscribe>
+                            </FieldGroup>
+                        </form>
+                    </DialogContent>
+                </Dialog>
+
+                <span className="mt-2 text-destructive text-sm">
+                    * If you registered using a social account, logout and use
+                    the forgot password flow to change your password.
+                </span>
+            </div>
         </div>
     );
 };
